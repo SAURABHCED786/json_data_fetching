@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bind SELECT Element with JSON using JavaScript</title>
+</head>
+
+<body>
+    <p>
+        <input type="button" style="margin:10px 0;" onclick="Select()" value="Click to SELECT with JSON" />
+    </p>
+
+    <!--The SELECT element.-->
+    <select id="sel" onchange="show(this)">
+        <option value="">-- Select --</option>
+    </select>
+    <p id="loading">Loading...</p>
+    <p id="msg"></p>
+    <table id="dataTable">
+    </table>
+</body>
+
+<script>
+
+    const allApi_urls = [
+        "https://jsonplaceholder.typicode.com/posts",
+        "https://jsonplaceholder.typicode.com/users",
+        "https://jsonplaceholder.typicode.com/comments"
+    ];
+
+    let count = 0;
+    function Select() {
+        // the json.
+
+        let ele = document.getElementById('sel');
+        if (count == 0) {
+            for (let i = 0; i < allApi_urls.length; i++) {
+                // populate select element with json.
+                ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[i] + '">' + allApi_urls[i] + '</option>';
+            }
+            count += 1;
+        }
+
+    }
+
+    function show(ele) {
+        // get the selected value from <select> element and show it.
+        let api_url = ele.options[ele.selectedIndex].text;
+        // selected index is my api url
+        console.log(api_url, "api_url");
+        getapi(api_url);
+
+        async function getapi(url) {
+            const response = await fetch(url);
+            // Storing data in form of JSON
+            var data = await response.json();
+            if (response) {
+                hideloader();
+            }
+            showing(data);
+            function hideloader() {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        let msg = document.getElementById('msg');
+
+        msg.innerHTML = 'Selected URL: <b>' + ele.options[ele.selectedIndex].text + '</b>';
+    }
+
+    function showing(data) {
+        tab = ` <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Body</th>    
+                </tr> `;
+
+        data.forEach(e => {
+            if (e.title) {
+                console.log("you are right");
+                
+                tab += `<tr>
+                        <td style='text-align: center;'>${e.id}</td>
+                        <td>${e.title}</td>
+                        <td>${e.body}</td>
+                    </tr>`;
+            }
+            if (e.username) {
+                tab += `<tr>
+                        <td style='text-align: center;'>${e.username}</td>
+                        <td>${e.name}</td>
+                        <td>${e.email}</td>
+                    </tr>`;
+            }
+            if (e.postId) {
+                tab += `<tr>
+                        <td style='text-align: center;'>${e.id}</td>
+                        <td>${e.name}</td>
+                        <td>${e.body}</td>
+                    </tr>`;
+            }
+        });
+        document.getElementById('dataTable').innerHTML = tab;
+    }
+</script>
+
+</html>
