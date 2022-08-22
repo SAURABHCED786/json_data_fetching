@@ -5,23 +5,22 @@
     <title>Bind SELECT Element with JSON using JavaScript</title>
 </head>
 
-<body>
-    <p>
+<body onload="Select()">
+    <!-- <p>
         <input type="button" style="margin:10px 0;" onclick="Select()" value="Click to SELECT with JSON" />
-    </p>
+    </p> -->
 
     <!--The SELECT element.-->
     <select id="sel" onchange="show(this)">
-        <option value="">-- Select --</option>
+        <!-- <option value='https://jsonplaceholder.typicode.com/posts' >Post</option> -->
     </select>
-    <p id="loading">Loading...</p>
+    <!-- <p id="loading">Loading...</p> -->
     <p id="msg"></p>
     <table id="dataTable">
     </table>
 </body>
 
 <script>
-
     const allApi_urls = [
         "https://jsonplaceholder.typicode.com/posts",
         "https://jsonplaceholder.typicode.com/users",
@@ -31,41 +30,49 @@
     let count = 0;
     function Select() {
         // the json.
-
         let ele = document.getElementById('sel');
         if (count == 0) {
             for (let i = 0; i < allApi_urls.length; i++) {
                 // populate select element with json.
-                ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[i] + '">' + allApi_urls[i] + '</option>';
+                if (i == 0) {
+                    ele.innerHTML = ele.innerHTML + '<option selected id="opt_val" value="' + allApi_urls[0] + '">' + 'Post' + '</option>';
+                    show(ele);
+                }
+                if (i == 1) {
+                    ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[1] + '">' + 'User' + '</option>';
+                }
+                if (i == 2) {
+                    ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[2] + '">' + 'Comments' + '</option>';
+                }
+
             }
             count += 1;
         }
 
     }
-
     function show(ele) {
         // get the selected value from <select> element and show it.
-        let api_url = ele.options[ele.selectedIndex].text;
+        let opt_val = ele.options[ele.selectedIndex].value;
+        let api_url = opt_val;
         // selected index is my api url
-        console.log(api_url, "api_url");
         getapi(api_url);
 
         async function getapi(url) {
             const response = await fetch(url);
             // Storing data in form of JSON
             var data = await response.json();
-            if (response) {
-                hideloader();
+            if (response) {                
+                // hideloader();
             }
             showing(data);
-            function hideloader() {
-                document.getElementById('loading').style.display = 'none';
-            }
+            // function hideloader() {
+            //     document.getElementById('loading').style.display = 'none';
+            // }
         }
 
         let msg = document.getElementById('msg');
 
-        msg.innerHTML = 'Selected URL: <b>' + ele.options[ele.selectedIndex].text + '</b>';
+        msg.innerHTML = 'Selected URL: <b>' + ele.options[ele.selectedIndex].value + '</b>';
     }
 
     function showing(data) {
@@ -78,7 +85,7 @@
         data.forEach(e => {
             if (e.title) {
                 console.log("you are right");
-                
+
                 tab += `<tr>
                         <td style='text-align: center;'>${e.id}</td>
                         <td>${e.title}</td>
