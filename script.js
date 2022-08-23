@@ -49,7 +49,7 @@ async function getapi(url) {
 
 function showing(data) {
     tab = `<tr>
-                <th>Id</th>
+                <th style='text-align: center;'>Id</th>
                 <th>Title</th>
                 <th>Body</th>    
             </tr> `;
@@ -64,7 +64,7 @@ function showing(data) {
         }
         if (e.username) {
             tab += `<tr>
-                    <td style='text-align: center;'>${e.username}</td>
+                    <td style='text-align: center;'>${e.id}</td>
                     <td>${e.name}</td>
                     <td>${e.email}</td>
                 </tr>`;
@@ -138,5 +138,5 @@ function myFilter() {
         }
 
     }
-    
+
 }
