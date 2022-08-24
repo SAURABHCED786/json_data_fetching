@@ -1,32 +1,25 @@
 // Api Urls 
 const allApi_urls = [
-    "https://jsonplaceholder.typicode.com/posts",
-    "https://jsonplaceholder.typicode.com/users",
-    "https://jsonplaceholder.typicode.com/comments"
+    "https://jsonplaceholder.typicode.com/posts",    //0
+    "https://jsonplaceholder.typicode.com/users",    //1
+    "https://jsonplaceholder.typicode.com/comments"  //2
 ];
 
-let count = 0;
 function Select() {
-    // the json.
     let ele = document.getElementById('sel');
-    if (count == 0) {
-        for (let i = 0; i < allApi_urls.length; i++) {
-            // populate select element with json.
-            if (i == 0) {
-                ele.innerHTML = ele.innerHTML + '<option selected id="opt_val" value="' + allApi_urls[0] + '">' + 'Post' + '</option>';
-                show(ele);
-            }
-            if (i == 1) {
-                ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[1] + '">' + 'User' + '</option>';
-            }
-            if (i == 2) {
-                ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[2] + '">' + 'Comments' + '</option>';
-            }
-
+    for (let i = 0; i < allApi_urls.length; i++) {
+        // populate select element with json.
+        if (i == 0) {
+            ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[0] + '">' + 'Post' + '</option>';
+            show(ele);
         }
-        count += 1;
+        if (i == 1) {
+            ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[1] + '">' + 'User' + '</option>';
+        }
+        if (i == 2) {
+            ele.innerHTML = ele.innerHTML + '<option id="opt_val" value="' + allApi_urls[2] + '">' + 'Comments' + '</option>';
+        }
     }
-
 }
 function show(ele) {
     // get the selected value from <select> element and show it.
@@ -44,7 +37,7 @@ async function getapi(url) {
     var data = await response.json();
     if (response) {
         showing(data);
-     }
+    }
 }
 
 function showing(data) {
@@ -55,21 +48,21 @@ function showing(data) {
             </tr> `;
 
     data.forEach(e => {
-        if (e.title) {
+        if (e.title) { // find in post
             tab += `<tr>
                     <td style='text-align: center;'>${e.id}</td>
                     <td>${e.title}</td>
                     <td>${e.body}</td>
                 </tr>`;
         }
-        if (e.username) {
+        if (e.username) { // find in users
             tab += `<tr>
                     <td style='text-align: center;'>${e.id}</td>
                     <td>${e.name}</td>
                     <td>${e.email}</td>
                 </tr>`;
         }
-        if (e.postId) {
+        if (e.postId) { // find in 
             tab += `<tr>
                     <td style='text-align: center;'>${e.id}</td>
                     <td>${e.name}</td>
@@ -82,7 +75,6 @@ function showing(data) {
 
 function myFilter() {
     var input, filter, table, tr, td, i, txtValue;
-
     const selAtt = document.getElementById("selAtt");
     const sinp = selAtt.options[selAtt.selectedIndex].value
     if (sinp == 'id') { // Filter with Id
